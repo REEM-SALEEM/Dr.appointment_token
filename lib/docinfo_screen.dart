@@ -165,7 +165,7 @@ class _DocInfoPageState extends State<DocInfoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.31,
                 width: MediaQuery.of(context).size.width,
                 child: Container(
@@ -200,7 +200,7 @@ class _DocInfoPageState extends State<DocInfoPage> {
                               children: <Widget>[
                                 Text(
                                   widget.name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -236,9 +236,10 @@ class _DocInfoPageState extends State<DocInfoPage> {
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
+
                                 const SizedBox(height: 10),
                                 const Text(
-                                  "Available Time Slots",
+                                  "Available Dates",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w800,
@@ -311,11 +312,17 @@ class _DocInfoPageState extends State<DocInfoPage> {
                                       itemCount: 31),
                                 ),
                                 const SizedBox(height: 10),
-                                const Divider(),
+                                //----------------------------------------------------*time slots
+                                const Text(
+                                  "Available Time Slots",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
                                 const SizedBox(height: 10),
                                 SizedBox(
-                                  height: 200,
-                                  //----------------------------------------------------*time
+                                  height: 100,
                                   child: GridView.builder(
                                       padding: const EdgeInsets.all(0),
                                       gridDelegate:
@@ -328,7 +335,6 @@ class _DocInfoPageState extends State<DocInfoPage> {
                                       itemBuilder: (BuildContext ctx, index) {
                                         return InkWell(
                                           onTap: () async {
-                                            //------------------------
                                             setState(() {
                                               boollist1[index] = true;
                                             });
@@ -362,20 +368,34 @@ class _DocInfoPageState extends State<DocInfoPage> {
                                         );
                                       }),
                                 ),
+                                //----------------------------------------------------*view appointments(button)
+                                const SizedBox(height: 4),
+                                Center(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ScreenBooked(),
+                                      ));
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.black,
+                                    ),
+                                    child: const Text(
+                                      'PREVIOUS APPOINTMENTS',
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
                               ]),
                         ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ScreenBooked(),
-                              ));
-                            },
-                            icon: const Icon(Icons.arrow_forward_ios))
                       ]),
                 ),
               ),
             ]),
       ),
+      //-----------------------------------------------------------*BottomAppbar(button)
       bottomNavigationBar: BottomAppBar(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -450,7 +470,8 @@ class _DocInfoPageState extends State<DocInfoPage> {
                                           : "",
                                       time: _selectedtime != null
                                           ? _selectedtime!
-                                          : "", docname: widget.name);
+                                          : "",
+                                      docname: widget.name);
                                   TokenDB.instance
                                       .addTransaction(expensecategory);
                                   Navigator.pop(context);
@@ -459,9 +480,13 @@ class _DocInfoPageState extends State<DocInfoPage> {
                                   ));
                                   showTopSnackBar(
                                     Overlay.of(context)!,
-                                     CustomSnackBar.success(
-                                      message: 'Appointment booked!\n your token no. is " $_tokenNumber " ',textStyle: const TextStyle(
-                                  fontSize: 20,   fontWeight: FontWeight.bold,   color: Colors.white),
+                                    CustomSnackBar.success(
+                                      message:
+                                          'Appointment booked!\n your token no. is " $_tokenNumber " ',
+                                      textStyle: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                     ),
                                   );
                                 },
@@ -483,6 +508,7 @@ class _DocInfoPageState extends State<DocInfoPage> {
             },
             child: Container(
                 height: 44.0,
+                width: 150,
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(colors: [
                   Color.fromARGB(255, 2, 173, 102),

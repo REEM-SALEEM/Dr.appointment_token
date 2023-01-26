@@ -1,8 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hospitaltoken/database/db.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class ScreenBooked extends StatefulWidget {
   const ScreenBooked({super.key});
@@ -24,8 +24,6 @@ class _ScreenBookedState extends State<ScreenBooked> {
 
   @override
   Widget build(BuildContext context) {
-    getSavedData(context);
-    getSavedData2(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -45,15 +43,76 @@ class _ScreenBookedState extends State<ScreenBooked> {
                             child: ListTile(
                               trailing: IconButton(
                                   onPressed: () {
-                                    TokenDB.instance.deletetoken(category.id);
+                                    //-------------------------------
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: const Text(
+                                            'Cancel this Appointment?',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 78, 77, 77),
+                                              letterSpacing: 0.1,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          actions: [
+                                            FittedBox(
+                                              child: Row(
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: const Text(
+                                                      'No',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      TokenDB.instance
+                                                          .deletetoken(
+                                                              category.id);
+                                                      Navigator.pop(context);
+
+                                                      showTopSnackBar(
+                                                        Overlay.of(context)!,
+                                                        const CustomSnackBar
+                                                            .error(
+                                                          message:
+                                                              'Appointment cancelled',
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Text(
+                                                      'Yes',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                   icon: const Icon(Icons.close)),
                               leading: Container(
                                   height: 200,
                                   width: 60,
                                   decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromARGB(255, 122, 205, 228),
+                                    color: const Color.fromARGB(
+                                        255, 122, 205, 228),
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(),
                                     boxShadow: const [
@@ -115,8 +174,8 @@ class _ScreenBookedState extends State<ScreenBooked> {
                                           category.docname!,
                                           style: const TextStyle(
                                               fontSize: 15,
-                                              color:
-                                                  Color.fromARGB(255, 91, 89, 89),
+                                              color: Color.fromARGB(
+                                                  255, 91, 89, 89),
                                               fontWeight: FontWeight.bold),
                                         )
                                       : const Text(''),
@@ -136,21 +195,5 @@ class _ScreenBookedState extends State<ScreenBooked> {
         },
       ),
     );
-  }
-
-  //*get the saved name
-  Future<void> getSavedData(BuildContext context) async {
-    final sharedprefs = await SharedPreferences.getInstance();
-    //getter method - get the saved name by key
-    selectedIndex = sharedprefs.getString('selectedIndex');
-    setState(() {});
-  }
-
-  //*get the saved name
-  Future<void> getSavedData2(BuildContext context) async {
-    final sharedprefs = await SharedPreferences.getInstance();
-    //getter method - get the saved name by key
-    selectedday = sharedprefs.getString('selectedday');
-    setState(() {});
   }
 }

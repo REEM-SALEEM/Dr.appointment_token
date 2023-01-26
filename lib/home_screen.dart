@@ -13,9 +13,9 @@ final drnamelist = [
   "Dr. Susan Thomas",
   "Dr. Paul Barbara",
   "Dr. Nancy Williams",
-  "Dr. Susan Thomas",
-  "Dr. Paul Barbara",
-  "Dr. Nancy Williams"
+  "Dr. Oliver jones",
+  "Dr. Noah Johnson",
+  "Dr. Serena Gome"
 ];
 const imglist = [
   AssetImage('assets/images/docprofile/doc1.png'),
@@ -37,7 +37,7 @@ class _MyFirstPageState extends State<MyFirstPage> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: CustomPaint(
-              painter: pathPainter(),
+              painter: PathPainter(),
             ),
           ),
           Container(
@@ -117,7 +117,7 @@ class _MyFirstPageState extends State<MyFirstPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Container(
+                      SizedBox(
                         height: 350,
                         width: 700,
                         child: SingleChildScrollView(
@@ -169,10 +169,10 @@ class _MyFirstPageState extends State<MyFirstPage> {
                                                 ),
                                               ),
                                               const SizedBox(height: 5),
-                                              Container(
+                                              const SizedBox(
                                                 width: 200,
                                                 height: 50,
-                                                child: const Text(
+                                                child: Text(
                                                   "A brief about the doctor to be added here. This is more like an introduction about the doctor",
                                                   style: TextStyle(
                                                     fontSize: 12,
@@ -189,17 +189,8 @@ class _MyFirstPageState extends State<MyFirstPage> {
                                   );
                                 },
                                 separatorBuilder: (context, index) =>
-                                    SizedBox(),
-                                itemCount: imglist.length)
-                            //  Column(children: <Widget>[
-                            //   createDocWidget("doc1.png", "Susan Thomas"),
-                            //   createDocWidget("doc2.png", "Paul Barbara"),
-                            //   createDocWidget("doc3.png", "Nancy Williams"),
-                            //   createDocWidget("doc1.png", "Susan Thomas"),
-                            //   createDocWidget("doc2.png", "Paul Barbara"),
-                            //   createDocWidget("doc3.png", "Nancy Williams"),
-                            // ]),
-                            ),
+                                    const SizedBox(),
+                                itemCount: imglist.length)),
                       )
                     ]),
               )
@@ -218,81 +209,15 @@ class _MyFirstPageState extends State<MyFirstPage> {
           Image.asset('assets/images/category/$imgName'),
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
           )
         ],
       ),
     );
   }
-
-  // Container createDocWidget(String imgName, String docName) {
-  //   return Container(
-  //     child: InkWell(
-  //       onTap: () {
-  //         Navigator.of(context).push(MaterialPageRoute(
-  //           builder: (context) => DocInfoPage(
-  //             name: docName,
-  //           ),
-  //         ));
-  //       },
-  //       child: Container(
-  //         margin: const EdgeInsets.only(bottom: 15),
-  //         decoration: const BoxDecoration(
-  //           borderRadius: BorderRadius.all(
-  //             Radius.circular(12),
-  //           ),
-  //           color: docContentBgColor,
-  //         ),
-  //         child: Container(
-  //           padding: const EdgeInsets.all(7),
-  //           child: Row(
-  //             crossAxisAlignment: CrossAxisAlignment.end,
-  //             children: <Widget>[
-  //               Container(
-  //                 width: 70,
-  //                 height: 90,
-  //                 decoration: BoxDecoration(
-  //                     image: DecorationImage(
-  //                         image:
-  //                             AssetImage('assets/images/docprofile/$imgName'),
-  //                         fit: BoxFit.cover)),
-  //               ),
-  //               const SizedBox(width: 10),
-  //               Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: <Widget>[
-  //                   Text(
-  //                     "Dr. $docName",
-  //                     style: const TextStyle(
-  //                       fontSize: 18,
-  //                       fontWeight: FontWeight.w600,
-  //                     ),
-  //                   ),
-  //                   const SizedBox(height: 5),
-  //                   Container(
-  //                     width: 200,
-  //                     height: 50,
-  //                     child: const Text(
-  //                       "A brief about the doctor to be added here. This is more like an introduction about the doctor",
-  //                       style: TextStyle(
-  //                         fontSize: 12,
-  //                         fontWeight: FontWeight.w400,
-  //                       ),
-  //                       overflow: TextOverflow.clip,
-  //                     ),
-  //                   )
-  //                 ],
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
 
-class pathPainter extends CustomPainter {
+class PathPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = new Paint();
@@ -311,7 +236,6 @@ class pathPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
     return true;
   }
 }

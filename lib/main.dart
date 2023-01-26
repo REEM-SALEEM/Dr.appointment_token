@@ -4,16 +4,15 @@ import 'package:hospitaltoken/const/colors.dart';
 import 'package:hospitaltoken/home_screen.dart';
 import 'package:hospitaltoken/model/model.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-if(!Hive.isAdapterRegistered(AppointmentModelAdapter().typeId)){
+  if (!Hive.isAdapterRegistered(AppointmentModelAdapter().typeId)) {
     Hive.registerAdapter(AppointmentModelAdapter());
-}
+  }
 
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -50,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: CustomPaint(
-                  painter: pathPainter(),
+                  painter: PathPainter(),
                 ),
               ),
               Container(
@@ -126,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class pathPainter extends CustomPainter {
+class PathPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
