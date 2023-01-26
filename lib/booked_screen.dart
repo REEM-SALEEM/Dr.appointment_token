@@ -18,7 +18,7 @@ class _ScreenBookedState extends State<ScreenBooked> {
   void initState() {
     TokenDB.instance.getAllTransactions();
     TokenDB.instance.refreshUI();
-    log(TokenDB.instance.incomeCategoryList.value.length.toString());
+    log(TokenDB.instance.tokenlist.value.length.toString());
     super.initState();
   }
 
@@ -29,7 +29,7 @@ class _ScreenBookedState extends State<ScreenBooked> {
         backgroundColor: Colors.green,
       ),
       body: ValueListenableBuilder(
-        valueListenable: TokenDB.instance.incomeCategoryList,
+        valueListenable: TokenDB.instance.tokenlist,
         builder: (BuildContext context, value, Widget? child) {
           return value.isEmpty
               ? const Center(child: Text('No Booked Appointments'))

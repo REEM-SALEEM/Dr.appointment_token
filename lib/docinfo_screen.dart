@@ -135,9 +135,9 @@ class _DocInfoPageState extends State<DocInfoPage> {
   String? _selectedtime;
   String? _selectedday;
   String? _selecteddate;
-  int _tokenNumber = TokenDB.instance.incomeCategoryList.value.isEmpty
+  int _tokenNumber = TokenDB.instance.tokenlist.value.isEmpty
       ? 0
-      : TokenDB.instance.incomeCategoryList.value.length + 1;
+      : TokenDB.instance.tokenlist.value.length + 1;
   @override
   void initState() {
     boollist.forEach((k, v) {
@@ -472,8 +472,7 @@ class _DocInfoPageState extends State<DocInfoPage> {
                                           ? _selectedtime!
                                           : "",
                                       docname: widget.name);
-                                  TokenDB.instance
-                                      .addTransaction(expensecategory);
+                                  TokenDB.instance.addtoken(expensecategory);
                                   Navigator.pop(context);
                                   Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const ScreenBooked(),

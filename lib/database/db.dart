@@ -6,52 +6,49 @@ const tokendbname = 'token_database';
 
 abstract class TokenDbFunctions {
   Future<List<AppointmentModel>> getAllTransactions();
-  Future<void> addTransaction(AppointmentModel obj);
+  Future<void> addtoken(AppointmentModel obj);
   Future<void> deletetoken(String categoryID);
-
-  // Future<void> transactionClear();
 }
 
 class TokenDB implements TokenDbFunctions {
-  TokenDB._internal(); //singleton obj(_internal)
+  TokenDB._internal();
   static TokenDB instance = TokenDB._internal();
   factory TokenDB() {
-    //factory: returns the existing object, if none is present will create one. (& to ensure)
     return instance;
   }
   @override
-  Future<void> addTransaction(AppointmentModel obj) async {
-    final transactionDB = await Hive.openBox<AppointmentModel>(tokendbname);
-    await transactionDB.put(obj.id, obj);
+  Future<void> addtoken(AppointmentModel obj) async {
+    final tokenDB = await Hive.openBox<AppointmentModel>(tokendbname);
+    await tokenDB.put(obj.id, obj);
     refreshUI();
   }
 
   @override
   Future<List<AppointmentModel>> getAllTransactions() async {
-    final transactionDB = await Hive.openBox<AppointmentModel>(tokendbname);
+    final tokenDB = await Hive.openBox<AppointmentModel>(tokendbname);
 
-    return transactionDB.values.toList();
+    return tokenDB.values.toList();
   }
 
-  ValueNotifier<List<AppointmentModel>> incomeCategoryList = ValueNotifier([]);
+  ValueNotifier<List<AppointmentModel>> tokenlist = ValueNotifier([]);
   Future<void> refreshUI() async {
-    final allcategories = await getAllTransactions();
-    incomeCategoryList.value.clear();
+    final alltokens = await getAllTransactions();
+    tokenlist.value.clear();
 
     await Future.forEach(
-      allcategories,
+      alltokens,
       (AppointmentModel category) {
-        incomeCategoryList.value.add(category);
+        tokenlist.value.add(category);
       },
     );
-    incomeCategoryList.notifyListeners();
+    tokenlist.notifyListeners();
   }
 
   @override
   Future<void> deletetoken(String categoryID) async {
-    final categoryDB = await Hive.openBox<AppointmentModel>(tokendbname);
-    categoryDB.delete(categoryID);
+    final tokenDB = await Hive.openBox<AppointmentModel>(tokendbname);
+    tokenDB.delete(categoryID);
     refreshUI();
-    incomeCategoryList.notifyListeners();
+    tokenlist.notifyListeners();
   }
 }
