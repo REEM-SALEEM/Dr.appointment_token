@@ -7,6 +7,7 @@ const tokendbname = 'token_database';
 abstract class TokenDbFunctions {
   Future<List<AppointmentModel>> getAllTransactions();
   Future<void> addTransaction(AppointmentModel obj);
+  Future<void> deletetoken(String categoryID);
 
   // Future<void> transactionClear();
 }
@@ -40,12 +41,17 @@ class TokenDB implements TokenDbFunctions {
     await Future.forEach(
       allcategories,
       (AppointmentModel category) {
-        if (category.token != null) {
-          incomeCategoryList.value.add(category);
-        } 
+        incomeCategoryList.value.add(category);
       },
     );
     incomeCategoryList.notifyListeners();
-   
+  }
+
+  @override
+  Future<void> deletetoken(String categoryID) async {
+    final categoryDB = await Hive.openBox<AppointmentModel>(tokendbname);
+    categoryDB.delete(categoryID);
+    refreshUI();
+    incomeCategoryList.notifyListeners();
   }
 }

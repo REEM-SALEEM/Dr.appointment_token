@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hospitaltoken/colors.dart';
+import 'package:hospitaltoken/const/colors.dart';
 import 'package:hospitaltoken/home_screen.dart';
 import 'package:hospitaltoken/model/model.dart';
 

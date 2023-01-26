@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hospitaltoken/colors.dart';
-import 'package:hospitaltoken/doc_info.dart';
+import 'package:hospitaltoken/const/colors.dart';
+import 'package:hospitaltoken/docinfo_screen.dart';
 
 class MyFirstPage extends StatefulWidget {
   const MyFirstPage({super.key});
@@ -8,6 +8,23 @@ class MyFirstPage extends StatefulWidget {
   @override
   _MyFirstPageState createState() => _MyFirstPageState();
 }
+
+final drnamelist = [
+  "Dr. Susan Thomas",
+  "Dr. Paul Barbara",
+  "Dr. Nancy Williams",
+  "Dr. Susan Thomas",
+  "Dr. Paul Barbara",
+  "Dr. Nancy Williams"
+];
+const imglist = [
+  AssetImage('assets/images/docprofile/doc1.png'),
+  AssetImage('assets/images/docprofile/doc2.png'),
+  AssetImage('assets/images/docprofile/doc3.png'),
+  AssetImage('assets/images/docprofile/doc1.png'),
+  AssetImage('assets/images/docprofile/doc2.png'),
+  AssetImage('assets/images/docprofile/doc3.png'),
+];
 
 class _MyFirstPageState extends State<MyFirstPage> {
   @override
@@ -102,19 +119,87 @@ class _MyFirstPageState extends State<MyFirstPage> {
                       const SizedBox(height: 20),
                       Container(
                         height: 350,
-                     width: 700,
+                        width: 700,
                         child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(children: <Widget>[
-                            createDocWidget("doc1.png", "Susan Thomas"),
-                            createDocWidget("doc2.png", "Paul Barbara"),
-                            createDocWidget("doc3.png", "Nancy Williams"),
-                            createDocWidget("doc1.png", "Susan Thomas"),
-                            createDocWidget("doc2.png", "Paul Barbara"),
-                            createDocWidget("doc3.png", "Nancy Williams"),
-                          ]),
-                        ),
+                            scrollDirection: Axis.vertical,
+                            physics: const BouncingScrollPhysics(),
+                            child: ListView.separated(
+                                physics: const ScrollPhysics(),
+                                padding: const EdgeInsets.all(0),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => DocInfoPage(
+                                          name: drnamelist[index],
+                                        ),
+                                      ));
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12),
+                                        ),
+                                        color: docContentBgColor,
+                                      ),
+                                      margin: const EdgeInsets.only(bottom: 15),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(children: [
+                                          Container(
+                                            width: 70,
+                                            height: 90,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: imglist[index],
+                                                    fit: BoxFit.cover)),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                drnamelist[index],
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Container(
+                                                width: 200,
+                                                height: 50,
+                                                child: const Text(
+                                                  "A brief about the doctor to be added here. This is more like an introduction about the doctor",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  overflow: TextOverflow.clip,
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ]),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(),
+                                itemCount: imglist.length)
+                            //  Column(children: <Widget>[
+                            //   createDocWidget("doc1.png", "Susan Thomas"),
+                            //   createDocWidget("doc2.png", "Paul Barbara"),
+                            //   createDocWidget("doc3.png", "Nancy Williams"),
+                            //   createDocWidget("doc1.png", "Susan Thomas"),
+                            //   createDocWidget("doc2.png", "Paul Barbara"),
+                            //   createDocWidget("doc3.png", "Nancy Williams"),
+                            // ]),
+                            ),
                       )
                     ]),
               )
@@ -140,69 +225,71 @@ class _MyFirstPageState extends State<MyFirstPage> {
     );
   }
 
-  Container createDocWidget(String imgName, String docName) {
-    return Container(
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const DocInfoPage(),
-          ));
-        },
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 15),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            ),
-            color: docContentBgColor,
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(7),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  width: 70,
-                  height: 90,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image:
-                              AssetImage('assets/images/docprofile/$imgName'),
-                          fit: BoxFit.cover)),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Dr. $docName",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Container(
-                      width: 200,
-                      height: 50,
-                      child: const Text(
-                        "A brief about the doctor to be added here. This is more like an introduction about the doctor",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        overflow: TextOverflow.clip,
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Container createDocWidget(String imgName, String docName) {
+  //   return Container(
+  //     child: InkWell(
+  //       onTap: () {
+  //         Navigator.of(context).push(MaterialPageRoute(
+  //           builder: (context) => DocInfoPage(
+  //             name: docName,
+  //           ),
+  //         ));
+  //       },
+  //       child: Container(
+  //         margin: const EdgeInsets.only(bottom: 15),
+  //         decoration: const BoxDecoration(
+  //           borderRadius: BorderRadius.all(
+  //             Radius.circular(12),
+  //           ),
+  //           color: docContentBgColor,
+  //         ),
+  //         child: Container(
+  //           padding: const EdgeInsets.all(7),
+  //           child: Row(
+  //             crossAxisAlignment: CrossAxisAlignment.end,
+  //             children: <Widget>[
+  //               Container(
+  //                 width: 70,
+  //                 height: 90,
+  //                 decoration: BoxDecoration(
+  //                     image: DecorationImage(
+  //                         image:
+  //                             AssetImage('assets/images/docprofile/$imgName'),
+  //                         fit: BoxFit.cover)),
+  //               ),
+  //               const SizedBox(width: 10),
+  //               Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: <Widget>[
+  //                   Text(
+  //                     "Dr. $docName",
+  //                     style: const TextStyle(
+  //                       fontSize: 18,
+  //                       fontWeight: FontWeight.w600,
+  //                     ),
+  //                   ),
+  //                   const SizedBox(height: 5),
+  //                   Container(
+  //                     width: 200,
+  //                     height: 50,
+  //                     child: const Text(
+  //                       "A brief about the doctor to be added here. This is more like an introduction about the doctor",
+  //                       style: TextStyle(
+  //                         fontSize: 12,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                       overflow: TextOverflow.clip,
+  //                     ),
+  //                   )
+  //                 ],
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class pathPainter extends CustomPainter {
